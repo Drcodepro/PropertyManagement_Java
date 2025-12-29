@@ -4,6 +4,7 @@ public class Tenant {
     public String name;
     public String phone;
     public String address;
+    public boolean isActice = true;
 
     public Tenant(String name,String phone,String address){
         this.name = name;
