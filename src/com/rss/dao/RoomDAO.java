@@ -17,9 +17,18 @@ public class RoomDAO {
             ps.setString(3,rm.location);
 
             ps.executeUpdate();
+            con.commit();
             System.out.println("Room added to DB successfully");
 
         } catch (SQLException e) {
+            try{
+                if(con!=null){
+                    con.rollback();
+                }
+            }
+           catch (SQLException e1){
+                e.printStackTrace();
+           }
             throw new RuntimeException(e);
         }
 

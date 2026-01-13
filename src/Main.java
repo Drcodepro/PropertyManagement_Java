@@ -43,8 +43,8 @@ public class Main {
     // ************ add Tenant ***********
 
     private static void addTanent(Connection con){
-        Tenant t1 = new Tenant("sabit shekh","4393746738","kohoka,Balaghat");
-        Tenant t2 = new Tenant("Yogendra P","9026673673","Khajari,Balaghat");
+        Tenant t1 = new Tenant("karan mankar","4393746738","kohoka,Balaghat");
+        Tenant t2 = new Tenant("bhupendra","9026673673","tekadi,Balaghat");
         TenantDAO.AddTenant(con,t1);
         TenantDAO.AddTenant(con,t2);
         System.out.println("----- Tenant Added successfully --- ");
@@ -55,9 +55,9 @@ public class Main {
     // ******** Add Room **********
 
     private  static  void addRoom(Connection con){
-        Room rm1 = new Room(1000,"katangi",true);
-        Room rm2 = new Room(7000,"delhi",true);
-        Room rm3 = new Room(3000,"seoni",true);
+        Room rm1 = new Room(8000,"NCR",true);
+        Room rm2 = new Room(12000,"peru",true);
+        Room rm3 = new Room(43000,"gurugram",true);
         RoomDAO.AddRoom(con,rm1);
         RoomDAO.AddRoom(con,rm2);
         RoomDAO.AddRoom(con,rm3);
@@ -91,13 +91,15 @@ public class Main {
 
     public static void main(String[] args) {
 
+        // creating an connection
         Connection con = DBconnection.getConnection();
 
+        // select the operation want to perform
         selectUserAction(con);
 
 
         try {
-            con.close();
+            if(con!=null) con.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
