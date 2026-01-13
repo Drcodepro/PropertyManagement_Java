@@ -1,7 +1,6 @@
 package com.rss.dao;
 import java.sql.*;
 import  com.rss.model.Room;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class RoomDAO {
@@ -22,9 +21,7 @@ public class RoomDAO {
 
         } catch (SQLException e) {
             try{
-                if(con!=null){
-                    con.rollback();
-                }
+                con.rollback();
             }
            catch (SQLException e1){
                 e.printStackTrace();
