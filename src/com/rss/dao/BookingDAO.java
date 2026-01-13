@@ -10,15 +10,15 @@ import java.util.Scanner;
 public class BookingDAO {
 
 
-    public static int BookRoom(){
+    // *********** Book the Room *******
+
+    public static int BookRoom(Connection con){
 
         String bookRoomSql = "INSERT INTO bookings(booking_date,tenant_id,room_id) values(?,?,?);";
         String getBookingIdSql = " SELECT booking_id FROM bookings WHERE tenant_id=? AND room_id=?;";
         String setRoomAvailabilitySql = "UPDATE rooms SET isAvailable=? WHERE room_id=?;";
 
 
-        // actual booking logic
-        Connection con = null; // for new connection reference;
         try {
             // created a new connection for this Transaction
             con = DBconnection.getConnection();
@@ -78,13 +78,42 @@ public class BookingDAO {
             }
             throw new RuntimeException(e);
         }
-        finally {
-            try {
-                if(con != null)con.close();
+    }
+
+
+
+//    *********** Delete the Existing Booking ***********
+
+    public static void deleteBooking(Connection con, int roomId){
+        String dlBookingSql = "delete from bookings where room_id = ?;";
+        String setRoomAvailabilitySql = "UPDATE rooms SET isAvailable=? WHERE room_id=?;";
+
+        try {
+            con.setAutoCommit(false);
+
+            // delete the booking from Database
+            try(PreparedStatement ps = con.prepareStatement(dlBookingSql)) {
+                ps.setInt(1, roomId);
+                ps.executeUpdate();
             }
-            catch (SQLException e){
-                e.printStackTrace();
+
+            // change the room Availability
+            RoomDAO.updateRoomVal(con,setRoomAvailabilitySql,true,roomId);
+
+            con.commit();
+
+        }
+        catch(Exception e){
+            try{
+                if(con!=null){  // check if connection is not null
+                    con.rollback(); // otherwise it will throw NullPointer exception
+                }
             }
+            catch (SQLException error){ // handle rollback exception
+                error.printStackTrace();
+            }
+            throw new RuntimeException(e);
         }
     }
+
 }

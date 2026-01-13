@@ -45,17 +45,8 @@ public class TenantDAO {
             }
 
 
-            // delete the associated booking
-            try(PreparedStatement ps = con.prepareStatement(dlBookingSql)) {
-                ps.setInt(1, tenant);
-                ps.executeUpdate();
-            }
-
-
-
-            // change the room Availability
-            RoomDAO.updateRoomVal(con,setRoomAvailabilitySql,true,roomId);
-
+            // delete the associated booking also change the room Availability
+            BookingDAO.deleteBooking(con, roomId);
 
 
             // delete the Tenant

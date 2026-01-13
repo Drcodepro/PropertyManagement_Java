@@ -81,27 +81,15 @@ public class RoomDAO {
 
 
     public  static  void deleteRoom(Connection con, int roomId){
-        String dlBookingSql = "delete from bookings where room_id = ?;";
         String dlRoomSql = " delete from rooms where room_id = ?;";
-        String setRoomAvailabilitySql = "UPDATE rooms SET isAvailable=? WHERE room_id=?;";
 
         try {
             con.setAutoCommit(false);
 
-            // delete the associated booking
-            try(PreparedStatement ps = con.prepareStatement(dlBookingSql)) {
-                ps.setInt(1, roomId);
-                ps.executeUpdate();
-            }
+            // delete the associated booking also change the room Availability
+            BookingDAO.deleteBooking(con, roomId);
 
-
-
-            // change the room Availability
-            RoomDAO.updateRoomVal(con,setRoomAvailabilitySql,true,roomId);
-
-
-
-            // delete the Tenant
+            // delete the Room
             try(PreparedStatement ps = con.prepareStatement(dlRoomSql)) {
                 ps.setInt(1, roomId);
                 ps.executeUpdate();

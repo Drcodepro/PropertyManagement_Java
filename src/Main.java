@@ -34,7 +34,7 @@ public class Main {
             case 3: bookRoom(con); break;
             case 4: deleteTenant(con); break;
             case 5: deleteRoom(con); break;
-//            case 6: cancelBooking(con); break;
+            case 6: cancelBooking(con); break;
             default: System.out.println("Please enter the correct Action, try again");
         }
     }
@@ -70,11 +70,10 @@ public class Main {
 
     private static void bookRoom(Connection con){
         // call room book method from BookingDAO
-        int booking_Id = BookingDAO.BookRoom();
+        int booking_Id = BookingDAO.BookRoom(con);
         if(booking_Id == -1) System.out.println("***** Entered Room_Id is Invalid, Please Try Again *****");
         else System.out.println("User Successfully Booked a Room, Booking id is: " + booking_Id);
     }
-
 
 
     // ******** Delete Tenant **********
@@ -95,6 +94,20 @@ public class Main {
     }
 
 
+    // ********* Delete the Existing Booking **********
+    private static void cancelBooking(Connection con){
+
+        Scanner sc = new Scanner(System.in);
+
+        // booking id is just for safety, we are not using this variable
+        System.out.print("Enter the Booking_Id want to delete : ");
+        int booking_id = sc.nextInt();
+        System.out.print("Enter the Room_id associated to this booking: ");
+        int room_id = sc.nextInt();
+        BookingDAO.deleteBooking(con,room_id);
+        System.out.println("---- Booking Deleted Successfully -----");
+    }
+
 
     public static void main(String[] args) {
 
@@ -103,7 +116,6 @@ public class Main {
 
         // select the operation want to perform
         selectUserAction(con);
-
 
         try {
             if(con!=null) con.close();
