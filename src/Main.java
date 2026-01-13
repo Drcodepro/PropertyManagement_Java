@@ -33,7 +33,7 @@ public class Main {
             case 2: addRoom(con); break;
             case 3: bookRoom(con); break;
             case 4: deleteTenant(con); break;
-//            case 5: deleteRoom(con); break;
+            case 5: deleteRoom(con); break;
 //            case 6: cancelBooking(con); break;
             default: System.out.println("Please enter the correct Action, try again");
         }
@@ -86,6 +86,13 @@ public class Main {
         System.out.println("---- Tenant Deleted Successfully -----");
     }
 
+    // ********** Delete Room **********
+    private static void deleteRoom(Connection con){
+        System.out.print("Enter the Room_id want to delete : ");
+        Scanner sc = new Scanner(System.in);
+        RoomDAO.deleteRoom(con,sc.nextInt());
+        System.out.println("---- Room Deleted Successfully -----");
+    }
 
 
 

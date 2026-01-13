@@ -78,4 +78,48 @@ public class RoomDAO {
         }
 
     }
+
+
+    public  static  void deleteRoom(Connection con, int roomId){
+        String dlBookingSql = "delete from bookings where room_id = ?;";
+        String dlRoomSql = " delete from rooms where room_id = ?;";
+        String setRoomAvailabilitySql = "UPDATE rooms SET isAvailable=? WHERE room_id=?;";
+
+        try {
+            con.setAutoCommit(false);
+
+            // delete the associated booking
+            try(PreparedStatement ps = con.prepareStatement(dlBookingSql)) {
+                ps.setInt(1, roomId);
+                ps.executeUpdate();
+            }
+
+
+
+            // change the room Availability
+            RoomDAO.updateRoomVal(con,setRoomAvailabilitySql,true,roomId);
+
+
+
+            // delete the Tenant
+            try(PreparedStatement ps = con.prepareStatement(dlRoomSql)) {
+                ps.setInt(1, roomId);
+                ps.executeUpdate();
+            }
+
+            con.commit();
+
+        }
+        catch(Exception e){
+            try{
+                if(con!=null){  // check if connection is not null
+                    con.rollback(); // otherwise it will throw NullPointer exception
+                }
+            }
+            catch (SQLException error){ // handle rollback exception
+                error.printStackTrace();
+            }
+            throw new RuntimeException(e);
+        }
+    }
 }
