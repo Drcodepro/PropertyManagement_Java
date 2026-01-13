@@ -5,42 +5,96 @@ import com.rss.model.Room;
 import com.rss.model.Tenant;
 import com.rss.util.DBconnection;
 
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
 
-        Connection con = DBconnection.getConnection();
+    private static void selectUserAction(Connection con){
+        System.out.println("Select you Action you want to perform - ");
+        System.out.println( "1 for add 'Tanent'" );
+        System.out.println( "2 for add 'Room' " );
+        System.out.println( "3 for 'booking room' " );
+        System.out.println( "4 for delete 'Tanent' " );
+        System.out.println( "5 for delete 'Room' " );
+        System.out.println("6 for 'Cancel Booking'");
+        System.out.print("Enter - ");
 
-        // Tenant operations class
-        TenantDAO Tdao = new TenantDAO();
+        Scanner sc = new Scanner(System.in);
+        int action = sc.nextInt();
 
-        // add Tenant
-        Tenant t1 = new Tenant("sahil shekh","7493746738","kohoka,Balaghat");
-        Tenant t2 = new Tenant("Ajju R","1026673673","Sitakhoh,Balaghat");
-        Tdao.AddTenant(con,t1);
-        Tdao.AddTenant(con,t2);
+        switch (action){
+            case 1: addTanent(con); break;
+            case 2: addRoom(con); break;
+            case 3: bookRoom(con); break;
+            case 4: deleteTenant(con); break;
+//            case 5: deleteRoom(con); break;
+//            case 6: cancelBooking(con); break;
+            default: System.out.println("Please enter the correct Action, try again");
+        }
+    }
 
 
-        // Add Room
+    // ************ add Tenant ***********
+
+    private static void addTanent(Connection con){
+        Tenant t1 = new Tenant("sabit shekh","4393746738","kohoka,Balaghat");
+        Tenant t2 = new Tenant("Yogendra P","9026673673","Khajari,Balaghat");
+        TenantDAO.AddTenant(con,t1);
+        TenantDAO.AddTenant(con,t2);
+        System.out.println("----- Tenant Added successfully --- ");
+    }
+
+
+
+    // ******** Add Room **********
+
+    private  static  void addRoom(Connection con){
         Room rm1 = new Room(1000,"katangi",true);
         Room rm2 = new Room(7000,"delhi",true);
         Room rm3 = new Room(3000,"seoni",true);
         RoomDAO.AddRoom(con,rm1);
         RoomDAO.AddRoom(con,rm2);
         RoomDAO.AddRoom(con,rm3);
+        System.out.println("----- Room Added successfully --- ");
+    }
 
 
 
+    // ******* Book Room ********
+
+    private static void bookRoom(Connection con){
         // call room book method from BookingDAO
         int booking_Id = BookingDAO.BookRoom();
-
         if(booking_Id == -1) System.out.println("***** Entered Room_Id is Invalid, Please Try Again *****");
         else System.out.println("User Successfully Booked a Room, Booking id is: " + booking_Id);
+    }
+
+
+
+    // ******** Delete Tenant **********
+
+    private static void deleteTenant(Connection con){
+        System.out.print("Enter the Tenant_id want to delete : ");
+        Scanner sc = new Scanner(System.in);
+        TenantDAO.deleteTenant(con,sc.nextInt());
+        System.out.println("---- Tenant Deleted Successfully -----");
+    }
+
+
+
+
+    public static void main(String[] args) {
+
+        Connection con = DBconnection.getConnection();
+
+        selectUserAction(con);
+
 
         try {
             con.close();

@@ -9,6 +9,8 @@ public class RoomDAO {
         String sql = "Insert into rooms(isAvailable,price,location) values (?,?,?);";
 
         try {
+            con.setAutoCommit(false);
+
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setBoolean(1,rm.isAvailable);
             ps.setInt(2,rm.price);
@@ -23,7 +25,7 @@ public class RoomDAO {
 
     }
 
-    public  static ArrayList GetAvailableRooms( Connection con){
+    public  static ArrayList<Integer> GetAvailableRooms( Connection con){
         String sql = "SELECT room_id,price,location FROM rooms WHERE isAvailable=1";
         ArrayList<Integer> AvailableRoomList = new ArrayList<>();
 

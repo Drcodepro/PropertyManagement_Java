@@ -27,7 +27,7 @@ public class BookingDAO {
 
 
             // ******* Get available rooms  ******
-            ArrayList AvailableRoomList =  RoomDAO.GetAvailableRooms(con);
+            ArrayList<Integer> AvailableRoomList =  RoomDAO.GetAvailableRooms(con);
 
             // getting roomId and tenanId from user --
             Scanner sc = new Scanner(System.in);
