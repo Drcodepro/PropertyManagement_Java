@@ -29,7 +29,7 @@ public class Main {
         int action = sc.nextInt();
 
         switch (action){
-            case 1: addTanent(con); break;
+            case 1: addTenant(con); break;
             case 2: addRoom(con); break;
             case 3: bookRoom(con); break;
             case 4: deleteTenant(con); break;
@@ -42,7 +42,7 @@ public class Main {
 
     // ************ add Tenant ***********
 
-    private static void addTanent(Connection con){
+    private static void addTenant(Connection con){
         Tenant t1 = new Tenant("karan mankar","4393746738","kohoka,Balaghat");
         Tenant t2 = new Tenant("bhupendra","9026673673","tekadi,Balaghat");
         TenantDAO.AddTenant(con,t1);
@@ -102,6 +102,7 @@ public class Main {
         // booking id is just for safety, we are not using this variable
         System.out.print("Enter the Booking_Id want to delete : ");
         int booking_id = sc.nextInt();
+
         System.out.print("Enter the Room_id associated to this booking: ");
         int room_id = sc.nextInt();
         BookingDAO.deleteBooking(con,room_id);
